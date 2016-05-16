@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Vehicle Maintenance Reminder</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edmunds_api_key">m276ud66jh53jc9f9cxm682n</string>
+    <string name="edmunds_api_secret">Hx3UHFENc7tGNf5kP6uFAMqh</string>
+</resources>
