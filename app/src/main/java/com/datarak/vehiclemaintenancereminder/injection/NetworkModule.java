@@ -1,5 +1,6 @@
 package com.datarak.vehiclemaintenancereminder.injection;
 
+import com.datarak.vehiclemaintenancereminder.Constants;
 import com.datarak.vehiclemaintenancereminder.api.EdmundsApiService;
 
 import java.io.IOException;
@@ -31,8 +32,30 @@ public class NetworkModule {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+        Interceptor requestParameterInterceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request originalRequest = chain.request();
+                HttpUrl originalHttpUrl = originalRequest.url();
+                HttpUrl url = originalHttpUrl.newBuilder()
+                        .addQueryParameter("fmt", "json")
+                        .addQueryParameter("apikey", Constants.EDMUNDS_API_KEY)
+                        .build();
+
+                // Request customization: add request headers
+                Request.Builder requestBuilder = originalRequest.newBuilder()
+                        .url(url)
+                        .method(originalRequest.method(), originalRequest.body());
+
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            }
+        };
+
+
         OkHttpClient.Builder builder =   new OkHttpClient.Builder();
         builder
+                .addInterceptor(requestParameterInterceptor)
                 .addInterceptor(loggingInterceptor)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS);
@@ -51,6 +74,4 @@ public class NetworkModule {
                 .build()
                 .create(EdmundsApiService.class);
     }
-
-
 }
