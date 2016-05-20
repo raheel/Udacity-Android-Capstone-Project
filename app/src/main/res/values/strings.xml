@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Vehicle Maintenance Reminder</string>
+    <string name="vehicle_year">Year</string>
+    <string name="vehicle_make">Make</string>
+    <string name="vehicle_model">Model</string>
+    <string name="hint_vehicle_current_mileage">Vehicle Mileage</string>
+    <string name="hint_vehicle_monthly_mileage">Miles Driven Monthly</string>
+    <string name="next">Next</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save">Save</string>
 </resources>

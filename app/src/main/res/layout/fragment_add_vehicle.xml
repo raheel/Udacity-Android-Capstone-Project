@@ -1,8 +1,44 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.AddVehicleFragment">
 
 
-</FrameLayout>
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/vehicle_year"
+        app:ms_floatingLabelText="@string/vehicle_year"
+        app:ms_hint="@string/vehicle_year"
+        style="@style/AppSpinner"
+        />
+
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/vehicle_make"
+        android:layout_marginTop="20dp"
+        app:ms_floatingLabelText="@string/vehicle_make"
+        app:ms_hint="@string/vehicle_make"
+        style="@style/AppSpinner"
+        />
+
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/vehicle_model"
+        android:layout_marginTop="20dp"
+        app:ms_floatingLabelText="@string/vehicle_model"
+        app:ms_hint="@string/vehicle_model"
+        style="@style/AppSpinner"
+        />
+
+    <Button
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
+        android:id="@+id/next_button"
+        android:text="@string/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

@@ -31,9 +31,6 @@ public class ActionHolder {
     private String item;
     @SerializedName("itemDescription")
     @Expose
-    private String itemDescription;
-    @SerializedName("laborUnits")
-    @Expose
     private Double laborUnits;
     @SerializedName("partUnits")
     @Expose
@@ -53,6 +50,9 @@ public class ActionHolder {
     @SerializedName("note1")
     @Expose
     private String note1;
+    @Expose
+    private String itemDescription;
+    @SerializedName("laborUnits")
 
     /**
      * 
@@ -324,4 +324,24 @@ public class ActionHolder {
         this.note1 = note1;
     }
 
+    @Override
+    public String toString() {
+        return "ActionHolder{" +
+                "id=" + id +
+                ", engineCode='" + engineCode + '\'' +
+                ", transmissionCode='" + transmissionCode + '\'' +
+                ", intervalMileage=" + intervalMileage +
+                ", frequency=" + frequency +
+                ", action='" + action + '\'' +
+                ", item='" + item + '\'' +
+                ", itemDescription='" + itemDescription + '\'' +
+                ", laborUnits=" + laborUnits +
+                ", partUnits=" + partUnits +
+                ", driveType='" + driveType + '\'' +
+                ", modelYear='" + modelYear + '\'' +
+                ", partCostPerUnit=" + partCostPerUnit +
+                ", intervalMonth=" + intervalMonth +
+                ", note1='" + note1 + '\'' +
+                '}';
+    }
 }

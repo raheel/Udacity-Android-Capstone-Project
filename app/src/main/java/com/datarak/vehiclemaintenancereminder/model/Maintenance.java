@@ -32,4 +32,10 @@ public class Maintenance {
         this.actionHolder = actionHolder;
     }
 
+    @Override
+    public String toString() {
+        return "Maintenance{" +
+                "actionHolder=" + actionHolder +
+                '}';
+    }
 }

@@ -95,4 +95,8 @@ public class Make {
         this.models = models;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

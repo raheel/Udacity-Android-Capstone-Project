@@ -1,5 +1,6 @@
 package com.datarak.vehiclemaintenancereminder.api;
 
+import com.datarak.vehiclemaintenancereminder.model.Maintenance;
 import com.datarak.vehiclemaintenancereminder.model.Makes;
 
 import retrofit2.http.GET;
@@ -14,5 +15,5 @@ public interface EdmundsApiService {
     public Observable<Makes> getMakesByYear(@Query("year")String year);
 
     @GET("v1/api/maintenance/actionrepository/findbymodelyearid")
-    public Observable<Makes> getVehicleMaintenance(@Query("modelyearid")String modelYearId);
+    public Observable<Maintenance> getVehicleMaintenance(@Query("modelyearid")int vehicleId);
 }

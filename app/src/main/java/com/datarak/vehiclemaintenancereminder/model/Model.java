@@ -95,4 +95,8 @@ public class Model {
         this.years = years;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

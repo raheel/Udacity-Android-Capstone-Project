@@ -23,8 +23,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by raheel on 5/16/16.
  */
+@Module
 public class NetworkModule {
-    public static final HttpUrl IMGUR_API_URL = HttpUrl.parse("https://developer.edmunds.com");
+    public static final HttpUrl EDMUNDS_API_URL = HttpUrl.parse("https://api.edmunds.com");
 
     @Provides
     @Singleton
@@ -39,7 +40,7 @@ public class NetworkModule {
                 HttpUrl originalHttpUrl = originalRequest.url();
                 HttpUrl url = originalHttpUrl.newBuilder()
                         .addQueryParameter("fmt", "json")
-                        .addQueryParameter("apikey", Constants.EDMUNDS_API_KEY)
+                        .addQueryParameter("api_key", Constants.EDMUNDS_API_KEY)
                         .build();
 
                 // Request customization: add request headers
@@ -65,10 +66,10 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    EdmundsApiService provideEdmundsApiService(HttpUrl imgurBaseUrl, OkHttpClient client) {
+    EdmundsApiService provideEdmundsApiService(OkHttpClient client) {
         return new Retrofit.Builder()
                 .client(client)
-                .baseUrl(imgurBaseUrl)
+                .baseUrl(EDMUNDS_API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()

@@ -53,4 +53,11 @@ public class Makes {
         this.makesCount = makesCount;
     }
 
+    @Override
+    public String toString() {
+        return "Makes{" +
+                "makes=" + makes +
+                ", makesCount=" + makesCount +
+                '}';
+    }
 }
