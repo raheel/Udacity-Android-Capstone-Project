@@ -41,6 +41,10 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
     private int vehicleId;
 
+    private String year;
+    private String make;
+    private String model;
+
     public AddVehicleFragment() {
         // Required empty public constructor
     }
@@ -71,6 +75,7 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_vehicle, container, false);
 
+        MaintenanceApp.getInstance().getComponent().inject(this);
         ButterKnife.bind(this, view);
 
         System.out.println("AddVehicleFragment.onCreateView");
@@ -86,7 +91,7 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
     @OnItemSelected(R.id.vehicle_year)
     public void onYearChange(int position){
         if (position>=0) {
-            String year = (String) yearSpinner.getItemAtPosition(position + 1);
+            year = (String) yearSpinner.getItemAtPosition(position + 1);
             presenter.onYearSelected(year);
         }
     }
@@ -95,16 +100,18 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
     @OnItemSelected(R.id.vehicle_make)
     public void onMakeChange(int position){
         if (position>=0) {
-            Make make = (Make) makeSpinner.getItemAtPosition(position + 1);
-            presenter.onMakeSelected(make);
+            Make m = (Make) makeSpinner.getItemAtPosition(position + 1);
+            String make = m.getName();
+            presenter.onMakeSelected(m);
         }
     }
 
     @OnItemSelected(R.id.vehicle_model)
     public void onModelChange(int position){
         if (position>=0) {
-            Model model = (Model) modelSpinner.getItemAtPosition(position + 1);
-            vehicleId = model.getYears().get(0).getId();
+            Model m = (Model) modelSpinner.getItemAtPosition(position + 1);
+            model = m.getName();
+            vehicleId = m.getYears().get(0).getId();
         }
     }
 
@@ -112,7 +119,7 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
     @OnClick(R.id.next_button)
     public void onNextClicked(){
         System.out.println("AddVehicleFragment.onNextClicked: " + vehicleId);
-        AddVehicleInfoFragment fragment = AddVehicleInfoFragment.newInstance(vehicleId);
+        AddVehicleInfoFragment fragment = AddVehicleInfoFragment.newInstance(vehicleId, year, make, model);
         getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
@@ -125,6 +132,7 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(adapter);
+        yearSpinner.setSelection(4);
     }
 
     @Override
@@ -136,6 +144,7 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
                 getContext(), android.R.layout.simple_spinner_item, makes.toArray(new Make[makes.size()]));
 
         makeSpinner.setAdapter(adapter);
+        makeSpinner.setSelection(1);
     }
 
     @Override
@@ -147,7 +156,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
                 getContext(), android.R.layout.simple_spinner_item, models.toArray(new Model[models .size()]));
 
         modelSpinner.setAdapter(adapter);
-
-
+        modelSpinner.setSelection(1);
     }
 }

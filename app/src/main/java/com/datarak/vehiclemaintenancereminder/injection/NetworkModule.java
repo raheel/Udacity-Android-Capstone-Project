@@ -1,7 +1,11 @@
 package com.datarak.vehiclemaintenancereminder.injection;
 
+import android.content.Context;
+
 import com.datarak.vehiclemaintenancereminder.Constants;
+import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
 import com.datarak.vehiclemaintenancereminder.api.EdmundsApiService;
+import com.datarak.vehiclemaintenancereminder.views.AddVehicleInfoFragment;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -74,5 +78,10 @@ public class NetworkModule {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
                 .create(EdmundsApiService.class);
+    }
+
+    @Provides
+    public Context provideContext() {
+        return MaintenanceApp.getInstance().getApplicationContext();
     }
 }

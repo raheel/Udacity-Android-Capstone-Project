@@ -1,0 +1,31 @@
+create table maintenance_item (
+    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    engine_code TEXT not null,
+    transmission_code TEXT,
+    interval_mileage INTEGER,
+    frequency INTEGER,
+    action_item TEXT,
+    item TEXT,
+    item_description TEXT,
+    labor_units REAL,
+    part_units REAL,
+    drive_type TEXT,
+    model_year TEXT,
+    part_cost_per_unit REAL,
+    interval_month INTEGER,
+    note1 TEXT,
+    is_scheduled INTEGER as Boolean,
+    is_recurring INTEGER as Boolean,
+    vehicle_id INTEGER,
+    maintenance_date  INTEGER,
+    foreign key(vehicle_id) references vehicle(_id)
+);
+
+
+select_all:
+select * from maintenance_item;
+
+schedule_item:
+update maintenance_item
+set is_scheduled=?, is_recurring=?
+where _id=?;

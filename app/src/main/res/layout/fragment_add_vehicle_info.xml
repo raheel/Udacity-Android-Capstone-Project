@@ -13,6 +13,8 @@
 
         <EditText
             android:id="@+id/input_vehicle_current_mileage"
+            android:inputType="number"
+            android:text="10000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_vehicle_current_mileage" />
@@ -27,6 +29,8 @@
 
         <EditText
             android:id="@+id/input_vehicle_monthly_mileage"
+            android:inputType="number"
+            android:text="1000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_vehicle_monthly_mileage" />

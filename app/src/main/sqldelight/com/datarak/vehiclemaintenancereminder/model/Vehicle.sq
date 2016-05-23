@@ -1,0 +1,17 @@
+create table vehicle (
+    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    vehicle_id INTEGER,
+    vehicle_year TEXT,
+    vehicle_make TEXT,
+    vehicle_model TEXT,
+    last_recorded_mileage INTEGER,
+    monthy_mileage INTEGER
+);
+
+select_all:
+select *
+from vehicle;
+
+delete_vehicle:
+delete from vehicle
+where vehicle_id = ?;

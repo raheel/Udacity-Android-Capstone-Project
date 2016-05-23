@@ -10,4 +10,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
+
+    <string name="schedule">Vehicle Maintenance Schedule</string>
+    <string name="select">Select</string>
+    <string name="repeat">Repeat</string>
+    <string name="action">Action</string>
+    <string name="date">Date</string>
+    <string name="frequency">Frequency</string>
+
 </resources>

@@ -7,10 +7,9 @@ import com.google.gson.annotations.SerializedName;
 
 @Generated("org.jsonschema2pojo")
 public class ActionHolder {
-
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private Long id;
     @SerializedName("engineCode")
     @Expose
     private String engineCode;
@@ -19,10 +18,10 @@ public class ActionHolder {
     private String transmissionCode;
     @SerializedName("intervalMileage")
     @Expose
-    private Integer intervalMileage;
+    private Long intervalMileage;
     @SerializedName("frequency")
     @Expose
-    private Integer frequency;
+    private Long frequency;
     @SerializedName("action")
     @Expose
     private String action;
@@ -30,6 +29,9 @@ public class ActionHolder {
     @Expose
     private String item;
     @SerializedName("itemDescription")
+    @Expose
+    private String itemDescription;
+    @SerializedName("laborUnits")
     @Expose
     private Double laborUnits;
     @SerializedName("partUnits")
@@ -46,20 +48,19 @@ public class ActionHolder {
     private Double partCostPerUnit;
     @SerializedName("intervalMonth")
     @Expose
-    private Integer intervalMonth;
+    private Long intervalMonth;
     @SerializedName("note1")
     @Expose
     private String note1;
-    @Expose
-    private String itemDescription;
-    @SerializedName("laborUnits")
+
+    private long maintenanceDate;
 
     /**
      * 
      * @return
      *     The id
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -68,7 +69,7 @@ public class ActionHolder {
      * @param id
      *     The id
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -113,7 +114,7 @@ public class ActionHolder {
      * @return
      *     The intervalMileage
      */
-    public Integer getIntervalMileage() {
+    public Long getIntervalMileage() {
         return intervalMileage;
     }
 
@@ -122,7 +123,7 @@ public class ActionHolder {
      * @param intervalMileage
      *     The intervalMileage
      */
-    public void setIntervalMileage(Integer intervalMileage) {
+    public void setIntervalMileage(Long intervalMileage) {
         this.intervalMileage = intervalMileage;
     }
 
@@ -131,7 +132,7 @@ public class ActionHolder {
      * @return
      *     The frequency
      */
-    public Integer getFrequency() {
+    public Long getFrequency() {
         return frequency;
     }
 
@@ -140,7 +141,7 @@ public class ActionHolder {
      * @param frequency
      *     The frequency
      */
-    public void setFrequency(Integer frequency) {
+    public void setFrequency(Long frequency) {
         this.frequency = frequency;
     }
 
@@ -293,7 +294,7 @@ public class ActionHolder {
      * @return
      *     The intervalMonth
      */
-    public Integer getIntervalMonth() {
+    public Long getIntervalMonth() {
         return intervalMonth;
     }
 
@@ -302,7 +303,7 @@ public class ActionHolder {
      * @param intervalMonth
      *     The intervalMonth
      */
-    public void setIntervalMonth(Integer intervalMonth) {
+    public void setIntervalMonth(Long intervalMonth) {
         this.intervalMonth = intervalMonth;
     }
 
@@ -324,6 +325,15 @@ public class ActionHolder {
         this.note1 = note1;
     }
 
+
+    public long getMaintenanceDate() {
+        return maintenanceDate;
+    }
+
+    public void setMaintenanceDate(long maintenanceDate) {
+        this.maintenanceDate = maintenanceDate;
+    }
+
     @Override
     public String toString() {
         return "ActionHolder{" +
@@ -343,5 +353,17 @@ public class ActionHolder {
                 ", intervalMonth=" + intervalMonth +
                 ", note1='" + note1 + '\'' +
                 '}';
+    }
+
+
+    public boolean isRepeat() {
+        return frequency==4;
+    }
+
+
+    public MaintenanceItem getMaintenanceItem(){
+        return new AutoValue_MaintenanceItem(-1l, engineCode, transmissionCode, intervalMileage, frequency,
+                action, item, itemDescription, laborUnits, partUnits, driveType, modelYear, partCostPerUnit, intervalMonth, note1,
+                false, false, id, maintenanceDate);
     }
 }

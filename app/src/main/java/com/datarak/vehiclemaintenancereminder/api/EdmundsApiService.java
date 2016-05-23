@@ -15,5 +15,5 @@ public interface EdmundsApiService {
     public Observable<Makes> getMakesByYear(@Query("year")String year);
 
     @GET("v1/api/maintenance/actionrepository/findbymodelyearid")
-    public Observable<Maintenance> getVehicleMaintenance(@Query("modelyearid")int vehicleId);
+    public Observable<Maintenance> getVehicleMaintenance(@Query("modelyearid")long vehicleId);
 }

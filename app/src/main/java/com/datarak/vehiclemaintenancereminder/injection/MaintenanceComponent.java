@@ -2,7 +2,9 @@ package com.datarak.vehiclemaintenancereminder.injection;
 
 
 import com.datarak.vehiclemaintenancereminder.views.AddVehicleFragment;
+import com.datarak.vehiclemaintenancereminder.views.AddVehicleInfoFragment;
 import com.datarak.vehiclemaintenancereminder.views.MainActivity;
+import com.datarak.vehiclemaintenancereminder.views.ShowMaintenanceScheduleFragment;
 
 import javax.inject.Singleton;
 
@@ -17,4 +19,6 @@ import dagger.Component;
 public interface MaintenanceComponent {
     void inject(MainActivity activity);
     void inject(AddVehicleFragment fragment);
+    void inject(AddVehicleInfoFragment fragment);
+    void inject(ShowMaintenanceScheduleFragment fragment);
 }
