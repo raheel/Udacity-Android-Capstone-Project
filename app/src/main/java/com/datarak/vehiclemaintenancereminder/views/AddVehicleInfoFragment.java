@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
 import com.datarak.vehiclemaintenancereminder.R;
@@ -71,23 +72,47 @@ public class AddVehicleInfoFragment extends BaseFragment implements AddVehicleIn
 
         ButterKnife.bind(this, view);
 
+        presenter.bindView(this);
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.unbind();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listener.setToolbarTitle(getString(R.string.enter_additional_info));
+        presenter.checkStatus();
     }
 
     @OnClick(R.id.save_button)
     public void onSaveClicked(){
-        System.out.println("AddVehicleInfoPresenter.onNextClicked: " + vehicleId);
+        if (currentMileage.getText()==null || currentMileage.getText().toString().trim().equals("")  || monthlyMileage.getText()==null || monthlyMileage.getText().toString().trim().equals("")){
+            Toast.makeText(getContext(), getContext().getString(R.string.enter_all_fields), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         int current = Integer.parseInt(currentMileage.getText().toString());
         int monthly = Integer.parseInt(monthlyMileage.getText().toString());
 
         presenter.saveVehicle(vehicleId, vehicleYear, vehicleMake, vehicleModel, current, monthly);
         ShowMaintenanceScheduleFragment fragment = ShowMaintenanceScheduleFragment.newInstance(vehicleId, current, monthly);
-        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        navigateTo(fragment);
     }
 
 
     @Override
     public void showMaintenanceSchedule() {
 
+    }
+
+    @Override
+    public void hasVehicle(long vehicleId, long currentMileage, long monthlyMileage) {
+        navigateTo(ShowMaintenanceScheduleFragment.newInstance((int) vehicleId, (int) currentMileage, (int) monthlyMileage));
     }
 }

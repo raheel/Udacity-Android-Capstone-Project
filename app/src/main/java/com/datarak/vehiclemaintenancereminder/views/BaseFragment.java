@@ -10,13 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.datarak.vehiclemaintenancereminder.R;
+
 import butterknife.ButterKnife;
 
 /**
  * Created by raheel on 5/10/16.
  */
 public class BaseFragment extends Fragment {
-    private OnFragmentInteractionListener listener;
+    protected OnFragmentInteractionListener listener;
 
     @Override
     public void onAttach(Context context) {
@@ -37,12 +39,15 @@ public class BaseFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+        void setToolbarTitle(String title);
     }
 
     public void navigateTo(Fragment fragment){
         FragmentTransaction fragmentTransaction = getFragmentManager().
                 beginTransaction().
-                add(fragment, fragment.getClass().getSimpleName()).
+                setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left).
+                replace(R.id.container, fragment, fragment.getClass().getSimpleName()).
                 addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

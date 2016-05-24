@@ -53,7 +53,7 @@ public class ActionHolder {
     @Expose
     private String note1;
 
-    private long maintenanceDate;
+    private String maintenanceDate;
 
     /**
      * 
@@ -326,11 +326,11 @@ public class ActionHolder {
     }
 
 
-    public long getMaintenanceDate() {
+    public String getMaintenanceDate() {
         return maintenanceDate;
     }
 
-    public void setMaintenanceDate(long maintenanceDate) {
+    public void setMaintenanceDate(String maintenanceDate) {
         this.maintenanceDate = maintenanceDate;
     }
 

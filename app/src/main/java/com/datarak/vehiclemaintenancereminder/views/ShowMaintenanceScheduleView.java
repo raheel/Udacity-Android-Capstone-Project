@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface ShowMaintenanceScheduleView {
     void displayItems(List<MaintenanceItem> items);
+    void noVehicles();
 }

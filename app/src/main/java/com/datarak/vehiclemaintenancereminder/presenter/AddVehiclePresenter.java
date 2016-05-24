@@ -1,9 +1,11 @@
 package com.datarak.vehiclemaintenancereminder.presenter;
 
+import com.datarak.vehiclemaintenancereminder.VehicleDao;
 import com.datarak.vehiclemaintenancereminder.api.EdmundsApiService;
 import com.datarak.vehiclemaintenancereminder.model.Make;
 import com.datarak.vehiclemaintenancereminder.model.Makes;
 import com.datarak.vehiclemaintenancereminder.model.Model;
+import com.datarak.vehiclemaintenancereminder.model.Vehicle;
 import com.datarak.vehiclemaintenancereminder.scheduler.AndroidScheduler;
 import com.datarak.vehiclemaintenancereminder.views.AddVehicleView;
 
@@ -22,6 +24,9 @@ public class AddVehiclePresenter {
     private AddVehicleView view;
     final EdmundsApiService apiService;
     final AndroidScheduler scheduler;
+
+    @Inject
+    VehicleDao vehicleDao;
 
     @Inject
     public AddVehiclePresenter(EdmundsApiService apiService, AndroidScheduler scheduler) {
@@ -48,32 +53,26 @@ public class AddVehiclePresenter {
             years.add(String.valueOf(i));
         }
 
-        System.out.println("years = " + years);
         view.populateYearSpinner(years);
     }
 
     public void onYearSelected(String year){
-        System.out.println("AddVehiclePresenter.onYearSelected " + year);
         apiService.getMakesByYear(year)
                 .subscribeOn(scheduler.getNewThread())
                 .observeOn(scheduler.getMainThread())
                 .subscribe(new Subscriber<Makes>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println("AddVehiclePresenter.onCompleted");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("AddVehiclePresenter.onError");
                         e.printStackTrace();
 
                     }
 
                     @Override
                     public void onNext(Makes makes) {
-                        System.out.println("AddVehiclePresenter.onNext");
-                        System.out.println("makes = " + makes);
                         view.populateMakeSpinner(makes.getMakes());
                     }
                 });
@@ -87,4 +86,13 @@ public class AddVehiclePresenter {
 
     public void onModelSelected(Model model){
     }
+
+    public void checkStatus() {
+        Vehicle vehicle = vehicleDao.getVehicle();
+        if (vehicle!=null){
+            view.hasVehicle(vehicle.vehicle_id(), vehicle.last_recorded_mileage(), vehicle.monthy_mileage());
+        }
+    }
+
+
 }

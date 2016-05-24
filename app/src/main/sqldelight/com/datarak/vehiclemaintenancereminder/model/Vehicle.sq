@@ -15,3 +15,6 @@ from vehicle;
 delete_vehicle:
 delete from vehicle
 where vehicle_id = ?;
+
+delete_all:
+delete from vehicle;

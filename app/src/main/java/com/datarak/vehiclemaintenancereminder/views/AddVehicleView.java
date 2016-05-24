@@ -12,4 +12,5 @@ public interface AddVehicleView {
     void populateYearSpinner(List<String> years);
     void populateMakeSpinner(List<Make> makes);
     void populateModelSpinner(List<Model> models);
+    void hasVehicle(long vehicleId, long currentMileage, long monthlyMileage);
 }

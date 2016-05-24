@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
 import com.datarak.vehiclemaintenancereminder.R;
@@ -15,6 +16,7 @@ import com.datarak.vehiclemaintenancereminder.model.Maintenance;
 import com.datarak.vehiclemaintenancereminder.model.Make;
 import com.datarak.vehiclemaintenancereminder.model.Model;
 import com.datarak.vehiclemaintenancereminder.presenter.AddVehiclePresenter;
+import com.datarak.vehiclemaintenancereminder.presenter.ShowMaintenanceSchedulePresenter;
 
 import java.util.List;
 
@@ -51,7 +53,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
 
     public static AddVehicleFragment newInstance() {
-        System.out.println("AddVehicleFragment.newInstance");
         AddVehicleFragment fragment = new AddVehicleFragment();
         return fragment;
     }
@@ -59,15 +60,12 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("AddVehicleFragment.onCreate");
-        System.out.println("yearSpinner = " + yearSpinner);
-        System.out.println("MaintenanceApp.getInstance() = " + MaintenanceApp.getInstance());
     }
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         presenter.unbind();
     }
 
@@ -78,15 +76,22 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
         MaintenanceApp.getInstance().getComponent().inject(this);
         ButterKnife.bind(this, view);
 
-        System.out.println("AddVehicleFragment.onCreateView");
-
         MaintenanceApp.getInstance().getComponent().inject(this);
-        System.out.println("_______1 presenter = " + presenter);
         presenter.bindView(this);
 
-        // Inflate the layout for this fragment
         return view;
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listener.setToolbarTitle(getString(R.string.add_vehicle));
+        presenter.checkStatus();
+    }
+
+
+
 
     @OnItemSelected(R.id.vehicle_year)
     public void onYearChange(int position){
@@ -101,7 +106,7 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
     public void onMakeChange(int position){
         if (position>=0) {
             Make m = (Make) makeSpinner.getItemAtPosition(position + 1);
-            String make = m.getName();
+            make = m.getName();
             presenter.onMakeSelected(m);
         }
     }
@@ -118,44 +123,41 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
     @OnClick(R.id.next_button)
     public void onNextClicked(){
-        System.out.println("AddVehicleFragment.onNextClicked: " + vehicleId);
+        if (year==null || make==null || model==null){
+            Toast.makeText(getContext(), getContext().getString(R.string.select_all_fields), Toast.LENGTH_SHORT).show();
+            return;
+        }
         AddVehicleInfoFragment fragment = AddVehicleInfoFragment.newInstance(vehicleId, year, make, model);
-        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        navigateTo(fragment);
     }
 
     @Override
     public void populateYearSpinner(List<String> years) {
-        System.out.println("AddVehicleFragment.populateYearSpinner");
-        System.out.println("years = " + years);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 getContext(), android.R.layout.simple_spinner_item, years.toArray(new String[years.size()]));
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(adapter);
-        yearSpinner.setSelection(4);
     }
 
     @Override
     public void populateMakeSpinner(List<Make> makes) {
-        System.out.println("AddVehicleFragment.populateMakeSpinner");
-        System.out.println("models = " + makes);
-
         ArrayAdapter<Make> adapter = new ArrayAdapter<Make>(
                 getContext(), android.R.layout.simple_spinner_item, makes.toArray(new Make[makes.size()]));
 
         makeSpinner.setAdapter(adapter);
-        makeSpinner.setSelection(1);
     }
 
     @Override
     public void populateModelSpinner(List<Model> models) {
-        System.out.println("AddVehicleFragment.populateModelSpinner");
-        System.out.println("models = " + models);
-
         ArrayAdapter<Model> adapter = new ArrayAdapter<Model>(
                 getContext(), android.R.layout.simple_spinner_item, models.toArray(new Model[models .size()]));
 
         modelSpinner.setAdapter(adapter);
-        modelSpinner.setSelection(1);
+    }
+
+    @Override
+    public void hasVehicle(long vehicleId, long currentMileage, long monthlyMileage) {
+        navigateTo(ShowMaintenanceScheduleFragment.newInstance((int) vehicleId, (int) currentMileage, (int) monthlyMileage));
     }
 }

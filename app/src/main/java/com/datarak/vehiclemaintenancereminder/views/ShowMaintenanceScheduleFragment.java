@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
 import com.datarak.vehiclemaintenancereminder.R;
@@ -37,13 +40,18 @@ public class ShowMaintenanceScheduleFragment extends BaseFragment implements Sho
     private int currentMileage;
     private int monthlyMileage;
 
+
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
+
     @Bind(R.id.schedules)
     GridLayout schedules;
 
+    @Bind(R.id.progressBar)
+    ProgressBar progressBar;
+
     @Inject
     ShowMaintenanceSchedulePresenter presenter;
-
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Inject
     public ShowMaintenanceScheduleFragment() {
@@ -81,8 +89,10 @@ public class ShowMaintenanceScheduleFragment extends BaseFragment implements Sho
 
         ButterKnife.bind(this, view);
 
-        System.out.println("__________________presenter = " + presenter);
         presenter.bindView(this);
+
+        progressBar.setVisibility(View.VISIBLE);
+        scrollView.setVisibility(View.GONE);
 
         presenter.showSchedule(vehicleId, currentMileage, monthlyMileage);
 
@@ -90,28 +100,61 @@ public class ShowMaintenanceScheduleFragment extends BaseFragment implements Sho
     }
 
     @Override
-    public void displayItems(List<MaintenanceItem> items) {
-        System.out.println("ShowMaintenanceScheduleFragment.displayItems");
-        System.out.println("items = [" + items.size() + "]");
+    public void noVehicles(){
+        navigateTo(AddVehicleFragment.newInstance());
+    }
 
-        Collections.sort(items);
+    @Override
+    public void onResume() {
+        super.onResume();
+        listener.setToolbarTitle(getString(R.string.schedule));
+        presenter.checkStatus();
 
-        for (MaintenanceItem item : items){
-            CheckBox checkBox = new CheckBox(getContext());
-            checkBox.setId((int)item._id());
-            schedules.addView(checkBox);
+    }
 
-            TextView description = new TextView(getContext());
-            description.setText(item.action_item() + "  " + item.item());
-            description.setLayoutParams(new ViewGroup.LayoutParams(getContext().getResources().getDimensionPixelSize(R.dimen.maintenance_action_width), ViewGroup.LayoutParams.WRAP_CONTENT));
-            schedules.addView(description);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.unbind();
+    }
 
-            System.out.println("____________________dt = " + item.maintenance_date());
-            TextView date = new TextView(getContext());
-            Date dt = new Date(item.maintenance_date());
-            date.setText(DATE_FORMAT.format(dt));
-            schedules.addView(date);
-        }
+    public void displayItems(final List<MaintenanceItem> items) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+                scrollView.setVisibility(View.VISIBLE);
+
+                Collections.sort(items);
+
+                for (final MaintenanceItem item : items){
+                    CheckBox checkBox = new CheckBox(getContext());
+                    checkBox.setId((int)item._id());
+                    checkBox.setChecked(item.is_scheduled());
+                    checkBox.setOnClickListener(new View.OnClickListener() {
+                        boolean isChecked = item.is_scheduled();
+                        @Override
+                        public void onClick(View v) {
+                            isChecked = !isChecked;
+                            Toast.makeText(getContext(), isChecked ? getContext().getString(R.string.item_scheduled) : getContext().getString(R.string.item_removed), Toast.LENGTH_SHORT).show();
+                            presenter.scheduleItem(item._id(), isChecked);
+                        }
+                    });
+                    schedules.addView(checkBox);
+
+
+                    TextView description = new TextView(getContext());
+                    description.setText(item.displayableAction());
+                    description.setLayoutParams(new ViewGroup.LayoutParams(getContext().getResources().getDimensionPixelSize(R.dimen.maintenance_action_width), ViewGroup.LayoutParams.WRAP_CONTENT));
+                    schedules.addView(description);
+
+                    TextView date = new TextView(getContext());
+                    date.setText(item.maintenance_date());
+                    schedules.addView(date);
+                }
+            }
+        });
+
     }
 
 }

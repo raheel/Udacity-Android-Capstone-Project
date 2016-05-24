@@ -17,13 +17,20 @@ create table maintenance_item (
     is_scheduled INTEGER as Boolean,
     is_recurring INTEGER as Boolean,
     vehicle_id INTEGER,
-    maintenance_date  INTEGER,
+    maintenance_date  TEXT,
     foreign key(vehicle_id) references vehicle(_id)
 );
 
 
 select_all:
 select * from maintenance_item;
+
+delete_all:
+delete from maintenance_item;
+
+select_today_scheduled:
+select * from maintenance_item
+where is_scheduled=1 and maintenance_date=?;
 
 schedule_item:
 update maintenance_item

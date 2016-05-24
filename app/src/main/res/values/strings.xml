@@ -11,11 +11,27 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
 
-    <string name="schedule">Vehicle Maintenance Schedule</string>
     <string name="select">Select</string>
     <string name="repeat">Repeat</string>
     <string name="action">Action</string>
     <string name="date">Date</string>
     <string name="frequency">Frequency</string>
 
+    <string name="add_vehicle">Add Vehicle</string>
+    <string name="enter_additional_info">Enter Additional Info</string>
+    <string name="schedule">Vehicle Maintenance Schedule</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="current_vehicle">Current Vehicle</string>
+    <string name="delete_vehicle">Delete</string>
+    <string name="no_vehicles">You have no vehicles</string>
+
+    <string name="menu_settings">Settings</string>
+
+    <string name="item_scheduled">Item scheduled for reminder</string>
+
+    <string name="item_removed">Item removed from reminder</string>
+
+    <string name="select_all_fields">Please select all fields before submitting the form.</string>
+    <string name="enter_all_fields">Please enter all fields before submitting the form.</string>
 </resources>
