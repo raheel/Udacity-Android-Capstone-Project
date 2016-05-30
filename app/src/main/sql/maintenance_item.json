@@ -1,0 +1,78 @@
+{
+"fields" : [
+{
+"name" : "engine_code",
+"type" : "String"
+},
+{
+"name" : "transmission_code",
+"type" : "String"
+},
+{
+"name" : "interval_mileage",
+"type" : "Integer"
+},
+{
+"name" : "frequency",
+"type" : "Integer"
+},
+{
+"name" : "action_item",
+"type" : "String"
+},
+{
+"name" : "item",
+"type" : "String"
+},
+{
+"name" : "item_description",
+"type" : "String"
+},
+{
+"name" : "labor_units",
+"type" : "Integer"
+},
+{
+"name" : "part_units",
+"type" : "Integer"
+},
+{
+"name" : "drive_type",
+"type" : "String"
+},
+{
+"name" : "model_year",
+"type" : "String"
+},
+{
+"name" : "part_cost_per_unit",
+"type" : "Double"
+},
+{
+"name" : "interval_month",
+"type" : "Integer"
+},
+{
+"name" : "note1",
+"type" : "String"
+},
+{
+"name" : "is_scheduled",
+"type" : "Boolean"
+},
+{
+"name" : "vehicle_id",
+"type" : "Integer",
+"foreignKey": {
+                "table": "vehicle",
+                "onDelete": "CASCADE"
+}},
+{
+"name" : "maintenance_date",
+"type" : "Date"
+}
+]
+}
+
+
+

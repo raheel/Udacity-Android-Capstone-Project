@@ -15,7 +15,6 @@ import com.datarak.vehiclemaintenancereminder.R;
 import com.datarak.vehiclemaintenancereminder.SettingsActivity;
 import com.datarak.vehiclemaintenancereminder.injection.DaggerMaintenanceComponent;
 import com.datarak.vehiclemaintenancereminder.job.MaintenanceJob;
-import com.datarak.vehiclemaintenancereminder.model.Maintenance;
 import com.datarak.vehiclemaintenancereminder.storage.KeyValueStore;
 import com.evernote.android.job.JobRequest;
 
@@ -41,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
             //run job daily
             keyValueStore.putBoolean(KeyValueStore.APP_INITIALIZED, true);
             new JobRequest.Builder(MaintenanceJob.TAG)
-                    .setPeriodic(DAY_IN_MILLISECONDS)
+                    //.setPeriodic(DAY_IN_MILLISECONDS)
+                    .setPeriodic(60*1000)
                     .setPersisted(true)
                     .build()
                     .schedule();

@@ -1,15 +1,21 @@
 
 package com.datarak.vehiclemaintenancereminder.model;
 
+import android.content.ContentValues;
+
 import javax.annotation.Generated;
+
+import com.datarak.vehiclemaintenancereminder.provider.maintenanceitem.MaintenanceItemContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
 
 @Generated("org.jsonschema2pojo")
 public class ActionHolder {
     @SerializedName("id")
     @Expose
-    private Long id;
+    private Integer id;
     @SerializedName("engineCode")
     @Expose
     private String engineCode;
@@ -18,10 +24,10 @@ public class ActionHolder {
     private String transmissionCode;
     @SerializedName("intervalMileage")
     @Expose
-    private Long intervalMileage;
+    private Integer intervalMileage;
     @SerializedName("frequency")
     @Expose
-    private Long frequency;
+    private Integer frequency;
     @SerializedName("action")
     @Expose
     private String action;
@@ -48,19 +54,19 @@ public class ActionHolder {
     private Double partCostPerUnit;
     @SerializedName("intervalMonth")
     @Expose
-    private Long intervalMonth;
+    private Integer intervalMonth;
     @SerializedName("note1")
     @Expose
     private String note1;
 
-    private String maintenanceDate;
+    private Date maintenanceDate;
 
     /**
      * 
      * @return
      *     The id
      */
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -69,7 +75,7 @@ public class ActionHolder {
      * @param id
      *     The id
      */
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -114,7 +120,7 @@ public class ActionHolder {
      * @return
      *     The intervalMileage
      */
-    public Long getIntervalMileage() {
+    public Integer getIntervalMileage() {
         return intervalMileage;
     }
 
@@ -123,7 +129,7 @@ public class ActionHolder {
      * @param intervalMileage
      *     The intervalMileage
      */
-    public void setIntervalMileage(Long intervalMileage) {
+    public void setIntervalMileage(Integer intervalMileage) {
         this.intervalMileage = intervalMileage;
     }
 
@@ -132,7 +138,7 @@ public class ActionHolder {
      * @return
      *     The frequency
      */
-    public Long getFrequency() {
+    public Integer getFrequency() {
         return frequency;
     }
 
@@ -141,7 +147,7 @@ public class ActionHolder {
      * @param frequency
      *     The frequency
      */
-    public void setFrequency(Long frequency) {
+    public void setFrequency(Integer frequency) {
         this.frequency = frequency;
     }
 
@@ -294,7 +300,7 @@ public class ActionHolder {
      * @return
      *     The intervalMonth
      */
-    public Long getIntervalMonth() {
+    public Integer getIntervalMonth() {
         return intervalMonth;
     }
 
@@ -303,7 +309,7 @@ public class ActionHolder {
      * @param intervalMonth
      *     The intervalMonth
      */
-    public void setIntervalMonth(Long intervalMonth) {
+    public void setIntervalMonth(Integer intervalMonth) {
         this.intervalMonth = intervalMonth;
     }
 
@@ -326,11 +332,11 @@ public class ActionHolder {
     }
 
 
-    public String getMaintenanceDate() {
+    public Date getMaintenanceDate() {
         return maintenanceDate;
     }
 
-    public void setMaintenanceDate(String maintenanceDate) {
+    public void setMaintenanceDate(Date maintenanceDate) {
         this.maintenanceDate = maintenanceDate;
     }
 
@@ -361,9 +367,27 @@ public class ActionHolder {
     }
 
 
-    public MaintenanceItem getMaintenanceItem(){
-        return new AutoValue_MaintenanceItem(-1l, engineCode, transmissionCode, intervalMileage, frequency,
-                action, item, itemDescription, laborUnits, partUnits, driveType, modelYear, partCostPerUnit, intervalMonth, note1,
-                false, false, id, maintenanceDate);
-    }
+    public ContentValues getMaintenanceItemContentValues(long id){
+        MaintenanceItemContentValues contentValues = new MaintenanceItemContentValues();
+        contentValues
+                .putVehicleId(id)
+                .putEngineCode(engineCode)
+                .putTransmissionCode(transmissionCode)
+                .putIntervalMileage(intervalMileage)
+                .putFrequency(frequency)
+                .putActionItem(action)
+                .putItem(item)
+                .putItemDescription(itemDescription)
+                .putLaborUnits(laborUnits)
+                .putPartUnits(partUnits)
+                .putDriveType(driveType)
+                .putModelYear(modelYear)
+                .putPartCostPerUnit(partCostPerUnit)
+                .putIntervalMonth(intervalMonth)
+                .putNote1(note1)
+                .putIsScheduled(false)
+                .putMaintenanceDate(maintenanceDate);
+
+           return contentValues.values();
+        }
 }

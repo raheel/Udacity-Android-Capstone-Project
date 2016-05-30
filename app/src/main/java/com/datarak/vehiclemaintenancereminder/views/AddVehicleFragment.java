@@ -85,7 +85,7 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
     @Override
     public void onResume() {
-        super.onResume();
+                super.onResume();
         listener.setToolbarTitle(getString(R.string.add_vehicle));
         presenter.checkStatus();
     }
@@ -138,6 +138,7 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(adapter);
+        yearSpinner.setSelection(4);
     }
 
     @Override
@@ -146,6 +147,8 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
                 getContext(), android.R.layout.simple_spinner_item, makes.toArray(new Make[makes.size()]));
 
         makeSpinner.setAdapter(adapter);
+        makeSpinner.setSelection(4);
+
     }
 
     @Override
@@ -154,10 +157,11 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
                 getContext(), android.R.layout.simple_spinner_item, models.toArray(new Model[models .size()]));
 
         modelSpinner.setAdapter(adapter);
+        modelSpinner.setSelection(4);
     }
 
     @Override
     public void hasVehicle(long vehicleId, long currentMileage, long monthlyMileage) {
-        navigateTo(ShowMaintenanceScheduleFragment.newInstance((int) vehicleId, (int) currentMileage, (int) monthlyMileage));
+                        navigateTo(ShowMaintenanceScheduleFragment.newInstance((int) vehicleId, (int) currentMileage, (int) monthlyMileage));
     }
 }
