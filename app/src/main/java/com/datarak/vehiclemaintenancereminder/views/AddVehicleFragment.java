@@ -85,13 +85,10 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
     @Override
     public void onResume() {
-        super.onResume();
+                super.onResume();
         listener.setToolbarTitle(getString(R.string.add_vehicle));
         presenter.checkStatus();
     }
-
-
-
 
     @OnItemSelected(R.id.vehicle_year)
     public void onYearChange(int position){
@@ -100,7 +97,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
             presenter.onYearSelected(year);
         }
     }
-
 
     @OnItemSelected(R.id.vehicle_make)
     public void onMakeChange(int position){
@@ -158,6 +154,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
     @Override
     public void hasVehicle(long vehicleId, long currentMileage, long monthlyMileage) {
-        navigateTo(ShowMaintenanceScheduleFragment.newInstance((int) vehicleId, (int) currentMileage, (int) monthlyMileage));
+                        navigateTo(ShowMaintenanceScheduleFragment.newInstance((int) vehicleId, (int) currentMileage, (int) monthlyMileage));
     }
 }

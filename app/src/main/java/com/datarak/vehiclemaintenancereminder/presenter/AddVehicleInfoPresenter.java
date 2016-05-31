@@ -1,11 +1,15 @@
 package com.datarak.vehiclemaintenancereminder.presenter;
 
-import com.datarak.vehiclemaintenancereminder.VehicleDao;
-import com.datarak.vehiclemaintenancereminder.api.EdmundsApiService;
-import com.datarak.vehiclemaintenancereminder.model.Vehicle;
-import com.datarak.vehiclemaintenancereminder.scheduler.AndroidScheduler;
+import android.database.Cursor;
+
+import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
+import com.datarak.vehiclemaintenancereminder.provider.MaintenanceProvider;
+import com.datarak.vehiclemaintenancereminder.provider.maintenanceitem.MaintenanceItemColumns;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleColumns;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleContentValues;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleCursor;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleSelection;
 import com.datarak.vehiclemaintenancereminder.views.AddVehicleInfoView;
-import com.datarak.vehiclemaintenancereminder.views.ShowMaintenanceScheduleView;
 
 import javax.inject.Inject;
 
@@ -14,10 +18,6 @@ import javax.inject.Inject;
  */
 public class AddVehicleInfoPresenter {
     private AddVehicleInfoView view;
-
-    @Inject
-    VehicleDao vehicleDao;
-
 
     @Inject
     public AddVehicleInfoPresenter() {
@@ -32,13 +32,21 @@ public class AddVehicleInfoPresenter {
     }
 
     public void saveVehicle(int vehicleId, String year, String make, String model, int lastRecordedMileage, int monthlyMileage){
-        vehicleDao.addVehicle(vehicleId, year, make, model, lastRecordedMileage, monthlyMileage);
+        VehicleContentValues values = new VehicleContentValues();
+        values.putVehicleId(vehicleId)
+                .putVehicleYear(year)
+                .putVehicleMake(make)
+                .putVehicleModel(model)
+                .putLastRecordedMileage(lastRecordedMileage)
+                .putMonthyMileage(monthlyMileage);
+
+        MaintenanceApp.getInstance().getContentResolver().insert(VehicleColumns.CONTENT_URI, values.values());
     }
 
     public void checkStatus() {
-        Vehicle vehicle = vehicleDao.getVehicle();
-        if (vehicle!=null){
-            view.hasVehicle(vehicle.vehicle_id(), vehicle.last_recorded_mileage(), vehicle.monthy_mileage());
+        VehicleCursor cursor = new VehicleSelection().query(MaintenanceApp.getInstance().getContentResolver());
+        if (cursor!=null && cursor.getCount()>0){
+            view.hasVehicle(cursor.getId(), cursor.getLastRecordedMileage(), cursor.getMonthyMileage());
         }
     }
 

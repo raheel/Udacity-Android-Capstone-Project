@@ -1,11 +1,11 @@
 package com.datarak.vehiclemaintenancereminder.presenter;
 
-import com.datarak.vehiclemaintenancereminder.VehicleDao;
+import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
 import com.datarak.vehiclemaintenancereminder.api.EdmundsApiService;
 import com.datarak.vehiclemaintenancereminder.model.Make;
 import com.datarak.vehiclemaintenancereminder.model.Makes;
-import com.datarak.vehiclemaintenancereminder.model.Model;
-import com.datarak.vehiclemaintenancereminder.model.Vehicle;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleCursor;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleSelection;
 import com.datarak.vehiclemaintenancereminder.scheduler.AndroidScheduler;
 import com.datarak.vehiclemaintenancereminder.views.AddVehicleView;
 
@@ -24,9 +24,6 @@ public class AddVehiclePresenter {
     private AddVehicleView view;
     final EdmundsApiService apiService;
     final AndroidScheduler scheduler;
-
-    @Inject
-    VehicleDao vehicleDao;
 
     @Inject
     public AddVehiclePresenter(EdmundsApiService apiService, AndroidScheduler scheduler) {
@@ -83,14 +80,11 @@ public class AddVehiclePresenter {
         view.populateModelSpinner(make.getModels());
     }
 
-
-    public void onModelSelected(Model model){
-    }
-
     public void checkStatus() {
-        Vehicle vehicle = vehicleDao.getVehicle();
-        if (vehicle!=null){
-            view.hasVehicle(vehicle.vehicle_id(), vehicle.last_recorded_mileage(), vehicle.monthy_mileage());
+                VehicleCursor cursor = new VehicleSelection().query(MaintenanceApp.getInstance().getContentResolver());
+                if (cursor!=null && cursor.getCount()>0){
+            cursor.moveToNext();
+            view.hasVehicle(cursor.getId(), cursor.getLastRecordedMileage(), cursor.getMonthyMileage());
         }
     }
 

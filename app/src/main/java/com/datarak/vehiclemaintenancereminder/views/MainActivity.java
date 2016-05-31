@@ -15,7 +15,6 @@ import com.datarak.vehiclemaintenancereminder.R;
 import com.datarak.vehiclemaintenancereminder.SettingsActivity;
 import com.datarak.vehiclemaintenancereminder.injection.DaggerMaintenanceComponent;
 import com.datarak.vehiclemaintenancereminder.job.MaintenanceJob;
-import com.datarak.vehiclemaintenancereminder.model.Maintenance;
 import com.datarak.vehiclemaintenancereminder.storage.KeyValueStore;
 import com.evernote.android.job.JobRequest;
 
