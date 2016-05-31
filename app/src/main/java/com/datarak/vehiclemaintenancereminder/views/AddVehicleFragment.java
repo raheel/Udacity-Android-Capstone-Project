@@ -90,9 +90,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
         presenter.checkStatus();
     }
 
-
-
-
     @OnItemSelected(R.id.vehicle_year)
     public void onYearChange(int position){
         if (position>=0) {
@@ -100,7 +97,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
             presenter.onYearSelected(year);
         }
     }
-
 
     @OnItemSelected(R.id.vehicle_make)
     public void onMakeChange(int position){
@@ -138,7 +134,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(adapter);
-        yearSpinner.setSelection(4);
     }
 
     @Override
@@ -147,8 +142,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
                 getContext(), android.R.layout.simple_spinner_item, makes.toArray(new Make[makes.size()]));
 
         makeSpinner.setAdapter(adapter);
-        makeSpinner.setSelection(4);
-
     }
 
     @Override
@@ -157,7 +150,6 @@ public class AddVehicleFragment extends BaseFragment implements AddVehicleView{
                 getContext(), android.R.layout.simple_spinner_item, models.toArray(new Model[models .size()]));
 
         modelSpinner.setAdapter(adapter);
-        modelSpinner.setSelection(4);
     }
 
     @Override

@@ -121,9 +121,8 @@ public class ShowMaintenanceScheduleFragment extends BaseFragment implements Sho
         super.onDestroyView();
         presenter.unbind();
     }
-
     public void displayItems() {
-                getActivity().runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 getLoaderManager().initLoader(URL_LOADER, null, ShowMaintenanceScheduleFragment.this);
@@ -133,7 +132,7 @@ public class ShowMaintenanceScheduleFragment extends BaseFragment implements Sho
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                        switch (id) {
+        switch (id) {
             case URL_LOADER:
                 // Returns a new CursorLoader
                 return new CursorLoader(

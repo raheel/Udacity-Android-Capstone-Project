@@ -34,4 +34,8 @@
 
     <string name="select_all_fields">Please select all fields before submitting the form.</string>
     <string name="enter_all_fields">Please enter all fields before submitting the form.</string>
+    <string name="appwidget_text">Maintenance App</string>
+    <string name="add_widget">Add widget</string>
+    <string name="no_maintenance">There are no maintenance scheduled</string>
+    <string name="maintenance_list">The following maintenance is/are scheduled:</string>
 </resources>

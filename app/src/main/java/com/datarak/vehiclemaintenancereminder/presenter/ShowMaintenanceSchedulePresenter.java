@@ -46,11 +46,10 @@ public class ShowMaintenanceSchedulePresenter {
     }
 
     public void showSchedule(final long vehicleId, final int currentMileage, final long monthlyMileage){
-
         MaintenanceItemSelection selection = new MaintenanceItemSelection();
         Cursor cursor = selection.query(MaintenanceApp.getInstance().getContentResolver());
 
-                if (cursor!=null && cursor.getCount() >0){
+        if (cursor!=null && cursor.getCount() >0){
             view.displayItems();
             return;
         }
@@ -81,6 +80,9 @@ public class ShowMaintenanceSchedulePresenter {
                                                 //if an item is repeat, then add one record for every occurrence
                         if (actionHolder.isRepeat()){
                             int interval = actionHolder.getIntervalMileage();
+                            if (interval <= 1000){
+                                interval = 10000;
+                            }
                             for (int miles = interval; miles < 300000; miles = miles + interval){
                                 int milesRemaining = miles - currentMileage;
                                 if (milesRemaining > 0){
@@ -89,7 +91,7 @@ public class ShowMaintenanceSchedulePresenter {
                                     actionHolder.setIntervalMileage(miles);
 
                                     Uri uri = MaintenanceApp.getInstance().getContentResolver().insert(MaintenanceItemColumns.CONTENT_URI, actionHolder.getMaintenanceItemContentValues(vehicleCursor.getId()));
-                                                                    }
+                                }
                             }
                         }
                         else {
@@ -98,8 +100,8 @@ public class ShowMaintenanceSchedulePresenter {
                                 long milesRemaining = mileage - currentMileage;
                                 int days =  (int)(milesRemaining / (monthlyMileage/30));
                                 actionHolder.setMaintenanceDate(addDays(days));
-                                                                Uri uri = MaintenanceApp.getInstance().getContentResolver().insert(MaintenanceItemColumns.CONTENT_URI, actionHolder.getMaintenanceItemContentValues(vehicleCursor.getId()));
-                                                            }
+                                Uri uri = MaintenanceApp.getInstance().getContentResolver().insert(MaintenanceItemColumns.CONTENT_URI, actionHolder.getMaintenanceItemContentValues(vehicleCursor.getId()));
+                            }
                         }
                     }
                     view.displayItems();

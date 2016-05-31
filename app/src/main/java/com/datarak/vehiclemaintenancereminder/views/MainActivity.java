@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
             //run job daily
             keyValueStore.putBoolean(KeyValueStore.APP_INITIALIZED, true);
             new JobRequest.Builder(MaintenanceJob.TAG)
-                    //.setPeriodic(DAY_IN_MILLISECONDS)
-                    .setPeriodic(60*1000)
+                    .setPeriodic(DAY_IN_MILLISECONDS)
                     .setPersisted(true)
                     .build()
                     .schedule();

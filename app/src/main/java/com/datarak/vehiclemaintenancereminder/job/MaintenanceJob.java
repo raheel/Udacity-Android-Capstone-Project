@@ -40,8 +40,6 @@ public class MaintenanceJob extends Job{
     @NonNull
     @Override
     protected Result onRunJob(Params params) {
-        String date = DATE_FORMAT.format(new Date());
-
         MaintenanceItemSelection selection = new MaintenanceItemSelection();
 
         selection.isScheduled(Boolean.TRUE);
