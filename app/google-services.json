@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "407303491881",
+    "project_id": "vehiclemaintenancereminder"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407303491881:android:9499eb7ddc41b58a",
+        "android_client_info": {
+          "package_name": "com.datarak.vehiclemaintenancereminder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP2rSeOFq62Pn2umsnnVZ8tzR3oykcr8M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-78583755-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
