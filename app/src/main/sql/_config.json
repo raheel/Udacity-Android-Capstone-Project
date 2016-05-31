@@ -1,0 +1,13 @@
+{
+    "syntaxVersion": 3,
+    "projectPackageId": "com.datarak.vehiclemaintenancereminder",
+    "authority": "com.datarak.vehiclemaintenancereminder.provider",
+    "providerJavaPackage": "com.datarak.vehiclemaintenancereminder.provider",
+    "providerClassName": "MaintenanceProvider",
+    "sqliteOpenHelperClassName": "MaintenanceSQLiteOpenHelper",
+    "sqliteOpenHelperCallbacksClassName": "MaintenanceSQLiteOpenHelperCallbacks",
+    "databaseFileName": "Maintenance.db",
+    "databaseVersion": 1,
+    "enableForeignKeys": true,
+    "useAnnotations": true
+}

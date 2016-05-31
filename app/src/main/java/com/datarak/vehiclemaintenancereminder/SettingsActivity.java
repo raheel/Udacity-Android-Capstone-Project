@@ -9,7 +9,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.datarak.vehiclemaintenancereminder.injection.DaggerMaintenanceComponent;
-import com.datarak.vehiclemaintenancereminder.model.Vehicle;
+import com.datarak.vehiclemaintenancereminder.provider.MaintenanceProvider;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleColumns;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleCursor;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleSelection;
 
 import javax.inject.Inject;
 
@@ -18,9 +21,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SettingsActivity extends AppCompatActivity {
-    @Inject
-    VehicleDao vehicleDao;
-
     @Bind(R.id.vehicle_container)
     View vehicleContainer;
 
@@ -54,12 +54,12 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Vehicle vehicle = vehicleDao.getVehicle();
-        if (vehicle!=null){
+        VehicleCursor vehicle = (new VehicleSelection()).query(MaintenanceApp.getInstance().getContentResolver());
+        if (vehicle.moveToNext()){
             vehicleContainer.setVisibility(View.VISIBLE);
             noVehicle.setVisibility(View.GONE);
 
-            vehicleName.setText(vehicle.vehicle_year() + " " + vehicle.vehicle_make() + " " + vehicle.vehicle_model());
+            vehicleName.setText(vehicle.getVehicleYear() + " " + vehicle.getVehicleMake() + " " + vehicle.getVehicleModel());
         }
         else{
             vehicleContainer.setVisibility(View.GONE);
@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @OnClick(R.id.delete_vehicle)
     public void deleteVehicle(){
-        vehicleDao.deleteAllVehicles();
+        MaintenanceApp.getInstance().getContentResolver().delete(VehicleColumns.CONTENT_URI, null, null);
 
         vehicleContainer.setVisibility(View.GONE);
         noVehicle.setVisibility(View.VISIBLE);

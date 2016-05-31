@@ -1,20 +1,23 @@
 package com.datarak.vehiclemaintenancereminder.presenter;
 
-import com.datarak.vehiclemaintenancereminder.VehicleDao;
+import android.database.Cursor;
+import android.net.Uri;
+
+import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
 import com.datarak.vehiclemaintenancereminder.api.EdmundsApiService;
 import com.datarak.vehiclemaintenancereminder.model.ActionHolder;
 import com.datarak.vehiclemaintenancereminder.model.Maintenance;
-import com.datarak.vehiclemaintenancereminder.model.MaintenanceItem;
-import com.datarak.vehiclemaintenancereminder.model.Makes;
-import com.datarak.vehiclemaintenancereminder.model.Vehicle;
+import com.datarak.vehiclemaintenancereminder.provider.MaintenanceProvider;
+import com.datarak.vehiclemaintenancereminder.provider.maintenanceitem.MaintenanceItemColumns;
+import com.datarak.vehiclemaintenancereminder.provider.maintenanceitem.MaintenanceItemContentValues;
+import com.datarak.vehiclemaintenancereminder.provider.maintenanceitem.MaintenanceItemSelection;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleCursor;
+import com.datarak.vehiclemaintenancereminder.provider.vehicle.VehicleSelection;
 import com.datarak.vehiclemaintenancereminder.scheduler.AndroidScheduler;
-import com.datarak.vehiclemaintenancereminder.views.AddVehicleView;
 import com.datarak.vehiclemaintenancereminder.views.ShowMaintenanceScheduleView;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,11 +30,6 @@ public class ShowMaintenanceSchedulePresenter {
     private ShowMaintenanceScheduleView view;
     final EdmundsApiService apiService;
     final AndroidScheduler scheduler;
-
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
-    @Inject
-    VehicleDao vehicleDao;
 
     @Inject
     public ShowMaintenanceSchedulePresenter(EdmundsApiService apiService, AndroidScheduler scheduler) {
@@ -47,15 +45,23 @@ public class ShowMaintenanceSchedulePresenter {
         this.view = null;
     }
 
-    public void showSchedule(long vehicleId, final int currentMileage, final long monthlyMileage){
-        List<MaintenanceItem> items = vehicleDao.getAllMaintenance();
+    public void showSchedule(final long vehicleId, final int currentMileage, final long monthlyMileage){
+        MaintenanceItemSelection selection = new MaintenanceItemSelection();
+        Cursor cursor = selection.query(MaintenanceApp.getInstance().getContentResolver());
 
-        if (!items.isEmpty()) {
-            view.displayItems(items);
+        if (cursor!=null && cursor.getCount() >0){
+            view.displayItems();
             return;
         }
 
-        apiService.getVehicleMaintenance(vehicleId)
+        VehicleSelection vehicleSelection = new VehicleSelection();
+        final VehicleCursor vehicleCursor = vehicleSelection.query(MaintenanceApp.getInstance().getContentResolver());
+
+        if (!vehicleCursor.moveToNext()){
+            view.noVehicles();
+        }
+
+        apiService.getVehicleMaintenance(vehicleCursor.getVehicleId())
             .subscribeOn(scheduler.getNewThread())
             .observeOn(scheduler.getNewThread())
             .subscribe(new Subscriber<Maintenance>() {
@@ -65,23 +71,26 @@ public class ShowMaintenanceSchedulePresenter {
 
                 @Override
                 public void onError(Throwable e) {
+                                                            e.printStackTrace();
                 }
 
                 @Override
                 public void onNext(Maintenance maintenance) {
-                    vehicleDao.getAllMaintenance();
                     for (ActionHolder actionHolder : maintenance.getActionHolder()) {
-                        System.out.println("actionHolder = " + actionHolder);
-                        //if an item is repeat, then add one record for every occurrence
+                                                //if an item is repeat, then add one record for every occurrence
                         if (actionHolder.isRepeat()){
-                            long interval = actionHolder.getIntervalMileage();
-                            for (long miles = interval; miles < 300000; miles = miles + interval){
-                                long milesRemaining = miles - currentMileage;
+                            int interval = actionHolder.getIntervalMileage();
+                            if (interval <= 1000){
+                                interval = 10000;
+                            }
+                            for (int miles = interval; miles < 300000; miles = miles + interval){
+                                int milesRemaining = miles - currentMileage;
                                 if (milesRemaining > 0){
                                     int days =  (int)(milesRemaining / (monthlyMileage/30));
                                     actionHolder.setMaintenanceDate(addDays(days));
                                     actionHolder.setIntervalMileage(miles);
-                                    vehicleDao.addMaintenance(actionHolder.getMaintenanceItem());
+
+                                    Uri uri = MaintenanceApp.getInstance().getContentResolver().insert(MaintenanceItemColumns.CONTENT_URI, actionHolder.getMaintenanceItemContentValues(vehicleCursor.getId()));
                                 }
                             }
                         }
@@ -91,12 +100,11 @@ public class ShowMaintenanceSchedulePresenter {
                                 long milesRemaining = mileage - currentMileage;
                                 int days =  (int)(milesRemaining / (monthlyMileage/30));
                                 actionHolder.setMaintenanceDate(addDays(days));
-                                 vehicleDao.addMaintenance(actionHolder.getMaintenanceItem());
+                                Uri uri = MaintenanceApp.getInstance().getContentResolver().insert(MaintenanceItemColumns.CONTENT_URI, actionHolder.getMaintenanceItemContentValues(vehicleCursor.getId()));
                             }
                         }
                     }
-                    List<MaintenanceItem> items = vehicleDao.getAllMaintenance();
-                    view.displayItems(items);
+                    view.displayItems();
 
                 }
             });
@@ -104,25 +112,24 @@ public class ShowMaintenanceSchedulePresenter {
 
 
     public void scheduleItem(long id, boolean on){
-        if (on) {
-            vehicleDao.scheduleMaintenance(id, false);
-        }
-        else{
-            vehicleDao.removeMaintenance(id, false);
-        }
+        MaintenanceItemContentValues contentValues = new MaintenanceItemContentValues();
+        contentValues.putIsScheduled(on);
+
+        MaintenanceApp.getInstance().getContentResolver().update(MaintenanceItemColumns.CONTENT_URI,
+                contentValues.values(),
+                MaintenanceItemColumns._ID + "=?",new String[] {String.valueOf(id)});
     }
 
 
-    private static String addDays(int numberOfDays){
+    private static Date addDays(int numberOfDays){
             Calendar c = Calendar.getInstance();
             c.add(Calendar.DATE, numberOfDays);
-
-            return DATE_FORMAT.format(c.getTime());
+            return c.getTime();
     }
 
     public void checkStatus() {
-        Vehicle vehicle = vehicleDao.getVehicle();
-        if (vehicle==null){
+        VehicleCursor cursor = new VehicleSelection().query(MaintenanceApp.getInstance().getContentResolver());
+        if (cursor==null || cursor.getCount()==0){
             view.noVehicles();
         }
     }

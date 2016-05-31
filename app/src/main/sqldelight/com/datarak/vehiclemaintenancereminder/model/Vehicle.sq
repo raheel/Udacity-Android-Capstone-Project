@@ -18,3 +18,4 @@ where vehicle_id = ?;
 
 delete_all:
 delete from vehicle;
+

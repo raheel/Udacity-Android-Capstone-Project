@@ -1,0 +1,30 @@
+{
+"fields" : [
+{
+"name" : "vehicle_id",
+"type" : "Integer"
+},
+{
+"name" : "vehicle_year",
+"type" : "String"
+},
+{
+"name" : "vehicle_make",
+"type" : "String"
+},
+{
+"name" : "vehicle_model",
+"type" : "String"
+},
+{
+"name" : "last_recorded_mileage",
+"type" : "Integer"
+},
+{
+"name" : "monthy_mileage",
+"type" : "Integer"
+}
+]
+}
+
+
