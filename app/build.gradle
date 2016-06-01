@@ -21,12 +21,24 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs{
+        release {
+            storeFile file("config/release.keystore")
+            storePassword "udacity"
+            keyAlias "udacity"
+            keyPassword "udacity"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor' // butterknife
     }
