@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
 import com.datarak.vehiclemaintenancereminder.R;
 
 import butterknife.ButterKnife;
@@ -29,7 +30,13 @@ public class BaseFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        Tr  acker tracker = MaintenanceApp.getInstance().getDefaultTracker();
+        tracker.setScreenName(getClass().getName());
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
+
+
 
     @Override
     public void onDetach() {

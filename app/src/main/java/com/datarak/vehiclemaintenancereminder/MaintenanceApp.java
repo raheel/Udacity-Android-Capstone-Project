@@ -13,6 +13,7 @@ import com.evernote.android.job.JobManager;
 public class MaintenanceApp extends Application {
     private static MaintenanceApp instance;
     private MaintenanceComponent component;
+    private Tracker tracker;
 
     private static final int DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
     @Override
@@ -32,4 +33,12 @@ public class MaintenanceApp extends Application {
         return component;
     }
 
+    synchronized public Tracker getDefaultTracker() {
+        if (tracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            tracker = analytics.newTracker(R.xml.global_tracker);
+        }
+        return tracker;
+    }
 }
