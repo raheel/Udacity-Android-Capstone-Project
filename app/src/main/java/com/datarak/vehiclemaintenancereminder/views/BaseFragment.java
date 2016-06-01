@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.datarak.vehiclemaintenancereminder.MaintenanceApp;
 import com.datarak.vehiclemaintenancereminder.R;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.ButterKnife;
 
@@ -31,7 +33,7 @@ public class BaseFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
 
-        Tr  acker tracker = MaintenanceApp.getInstance().getDefaultTracker();
+        Tracker tracker = MaintenanceApp.getInstance().getDefaultTracker();
         tracker.setScreenName(getClass().getName());
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }

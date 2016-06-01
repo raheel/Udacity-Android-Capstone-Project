@@ -20,6 +20,9 @@ import com.datarak.vehiclemaintenancereminder.R;
 import com.datarak.vehiclemaintenancereminder.presenter.ShowMaintenanceSchedulePresenter;
 import com.datarak.vehiclemaintenancereminder.provider.maintenanceitem.MaintenanceItemColumns;
 import com.datarak.vehiclemaintenancereminder.provider.maintenanceitem.MaintenanceItemCursor;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.text.SimpleDateFormat;
 
@@ -50,6 +53,9 @@ public class ShowMaintenanceScheduleFragment extends BaseFragment implements Sho
 
     @Bind(R.id.schedules)
     GridLayout schedules;
+
+    @Bind(R.id.adView)
+    AdView adView;
 
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
@@ -92,6 +98,13 @@ public class ShowMaintenanceScheduleFragment extends BaseFragment implements Sho
         View view = inflater.inflate(R.layout.fragment_show_maintenance_schedule, container, false);
 
         ButterKnife.bind(this, view);
+
+        MobileAds.initialize(getContext(), getString(R.string.banner_ad_unit_id));
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+                .build();
+
+        adView.loadAd(adRequest);
 
         presenter.bindView(this);
 

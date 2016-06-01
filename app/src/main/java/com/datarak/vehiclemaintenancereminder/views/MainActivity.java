@@ -17,6 +17,7 @@ import com.datarak.vehiclemaintenancereminder.injection.DaggerMaintenanceCompone
 import com.datarak.vehiclemaintenancereminder.job.MaintenanceJob;
 import com.datarak.vehiclemaintenancereminder.storage.KeyValueStore;
 import com.evernote.android.job.JobRequest;
+import com.google.android.gms.ads.MobileAds;
 
 import javax.inject.Inject;
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
                     .schedule();
 
         }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
